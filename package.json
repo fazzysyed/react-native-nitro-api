@@ -1,6 +1,6 @@
 {
   "name": "react-native-nitro-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "High-performance React Native API client with optional Nitro cache",
   "keywords": [
     "react-native",
@@ -51,14 +51,19 @@
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-native": ">=0.73.0"
+    "react-native": ">=0.73.0",
+    "react-native-nitro-modules": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-nitro-modules": {
+      "optional": true
+    }
   },
   "dependencies": {
     "axios": "latest"
   },
   "optionalDependencies": {
-    "@tanstack/react-query": "latest",
-    "react-native-nitro-modules": "latest"
+    "@tanstack/react-query": "latest"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

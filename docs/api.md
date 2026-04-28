@@ -1,5 +1,16 @@
 # API Reference
 
+## Installation modes
+
+- Base mode: install only `react-native-nitro-api` (JS cache fallback).
+- Nitro mode: additionally install `react-native-nitro-modules` in the app and run iOS pods.
+
+```sh
+npm install react-native-nitro-api
+npm install react-native-nitro-modules
+cd ios && pod install
+```
+
 ## `createAPI(options)`
 
 Creates an API client instance.

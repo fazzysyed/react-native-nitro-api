@@ -7,18 +7,52 @@ interface NitroCacheBridge {
   clear(): void;
 }
 
+interface NitroModulesProxy {
+  createHybridObject<T extends object>(name: string): T;
+  hasHybridObject(name: string): boolean;
+}
+
 declare global {
   var NitroModules: {
     NitroCache?: NitroCacheBridge;
   } | undefined;
+  var NitroModulesProxy: NitroModulesProxy | undefined;
 }
 
-function getNitroCache(): NitroCacheBridge | null {
+function getNitroModulesProxy(): NitroModulesProxy | null {
+  try {
+    const nitroModulesPkg = require('react-native-nitro-modules') as {
+      NitroModules?: NitroModulesProxy;
+    };
+    if (nitroModulesPkg?.NitroModules) {
+      return nitroModulesPkg.NitroModules;
+    }
+  } catch {
+    // Optional dependency is not installed in this app.
+  }
+  return globalThis.NitroModulesProxy ?? null;
+}
+
+function getNitroCacheFromProxy(proxy: NitroModulesProxy | null): NitroCacheBridge | null {
+  if (!proxy) {
+    return null;
+  }
+  try {
+    if (!proxy.hasHybridObject('NitroCache')) {
+      return null;
+    }
+    return proxy.createHybridObject<NitroCacheBridge>('NitroCache');
+  } catch {
+    return null;
+  }
+}
+
+function getLegacyNitroCache(): NitroCacheBridge | null {
   return globalThis.NitroModules?.NitroCache ?? null;
 }
 
 export function createNitroCacheAdapter(): CacheAdapter | null {
-  const nitro = getNitroCache();
+  const nitro = getNitroCacheFromProxy(getNitroModulesProxy()) ?? getLegacyNitroCache();
   if (!nitro) {
     return null;
   }

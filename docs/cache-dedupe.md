@@ -9,7 +9,9 @@
 
 ## Nitro + fallback
 
-- Nitro cache adapter is used when native module is available.
+- Nitro cache adapter is used when:
+  - `react-native-nitro-modules` is installed in the app, and
+  - `NitroCache` HybridObject is registered on native side.
 - Fallback to JS Map cache is automatic when Nitro is unavailable.
 
 ## Dedupe behavior
