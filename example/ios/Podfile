@@ -1,0 +1,54 @@
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'NitroApiExample' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  post_install do |installer|
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
+    )
+
+    # Xcode 16.4 + iOS 26 simulator toolchain can fail inside fmt consteval paths.
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'fmt'
+
+      target.build_configurations.each do |build_config|
+        existing_cppflags = build_config.build_settings['OTHER_CPLUSPLUSFLAGS']
+        cppflags = if existing_cppflags.nil?
+          '$(inherited)'
+        elsif existing_cppflags.is_a?(Array)
+          existing_cppflags.join(' ')
+        else
+          existing_cppflags.to_s
+        end
+
+        build_config.build_settings['OTHER_CPLUSPLUSFLAGS'] =
+          "#{cppflags} -DFMT_USE_CONSTEVAL=0 -DFMT_USE_NONTYPE_TEMPLATE_ARGS=0"
+        build_config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'gnu++17'
+      end
+    end
+  end
+end

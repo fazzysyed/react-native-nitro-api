@@ -1,0 +1,73 @@
+{
+  "name": "react-native-nitro-api",
+  "version": "0.1.0",
+  "description": "High-performance React Native API client with optional Nitro cache",
+  "keywords": [
+    "react-native",
+    "nitro",
+    "jsi",
+    "api-client",
+    "axios",
+    "cache",
+    "dedupe",
+    "upload",
+    "resumable-upload",
+    "typescript"
+  ],
+  "homepage": "https://github.com/fazzysyed/react-native-nitro-api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fazzysyed/react-native-nitro-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fazzysyed/react-native-nitro-api/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "react-native": "src/index.ts",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "!src/__tests__/**",
+    "cpp",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "test": "jest --watchman=false",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run typecheck && npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.73.0"
+  },
+  "dependencies": {
+    "axios": "latest"
+  },
+  "optionalDependencies": {
+    "@tanstack/react-query": "latest",
+    "react-native-nitro-modules": "latest"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.2.14",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.9",
+    "typescript": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

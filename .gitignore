@@ -1,0 +1,19 @@
+node_modules/
+dist/
+*.tgz
+.npmrc
+.DS_Store
+coverage/
+
+# Example app artifacts
+example/node_modules/
+example/ios/Pods/
+example/ios/build/
+example/android/.gradle/
+example/android/app/build/
+example/vendor/
+
+# Ruby / CocoaPods
+.bundle/
+vendor/bundle/
+node_modules
