@@ -19,9 +19,22 @@ Production-grade, Nitro-ready API client for React Native.
 
 ## Install
 
+### Base install (works everywhere)
+
 ```sh
 npm install react-native-nitro-api
 ```
+
+### Enable Nitro native acceleration (recommended)
+
+To use the native Nitro cache path, install Nitro Modules in your app too:
+
+```sh
+npm install react-native-nitro-modules
+cd ios && pod install
+```
+
+Without this dependency, the library still works and falls back to JS cache automatically.
 
 ## Quick start
 
@@ -62,8 +75,8 @@ const user = await api.get('/users/:id', {
 
 Nitro is optional by design.
 
-- If Nitro cache module is available, cache operations can use native path.
-- If Nitro is not available, library automatically falls back to JS Map cache.
+- If `react-native-nitro-modules` is installed and `NitroCache` HybridObject is registered, cache uses native Nitro path.
+- If Nitro is not available (or not registered), library automatically falls back to JS Map cache.
 - No runtime crash should occur due to missing Nitro module.
 
 ## Example app

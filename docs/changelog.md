@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.1
+
+Nitro integration release.
+
+### Changed
+
+- Added direct integration with `react-native-nitro-modules` `NitroModules` proxy.
+- Cache adapter now resolves native `NitroCache` HybridObject via `createHybridObject('NitroCache')` when available.
+- Kept safe fallback path to legacy/global cache bridge and JS cache.
+- Updated package metadata to declare `react-native-nitro-modules` as an optional peer dependency.
+
 ## 0.1.0
 
 Initial public release.
